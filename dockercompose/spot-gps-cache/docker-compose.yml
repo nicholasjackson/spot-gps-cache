@@ -1,0 +1,4 @@
+spotgpscache:
+  image: spot-gps-cache
+  ports:
+    - "8001:8001"
