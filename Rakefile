@@ -6,6 +6,10 @@ GOCMD = "/usr/local/go/bin/go"
 CONFIG = Dir.pwd + "/config.json"
 ROOTFOLDER = Dir.pwd
 
+REGISTRY_USER = ENV['DOCKER_REGISTRY_USER']
+REGISTRY_PASS = ENV['DOCKER_REGISTRY_PASS']
+REGISTRY_EMAIL = ENV['DOCKER_REGISTRY_EMAIL']
+
 task :build => [:test] do
 	p "Build for Linux"
 	container = get_container
@@ -60,4 +64,16 @@ task :build_go_build_server do
 
 	Docker.options = {:read_timeout => 6200}
 	image = Docker::Image.build_from_dir './dockerfile/gobuildserver', {:t => 'gobuildserver'}
+end
+
+task :push do
+	p "Push image to registry"
+
+	image =  find_image "spot-gps-cache:latest"
+	image.tag('repo' => 'tutum.co/nicholasjackson/spot-gps-cache', 'force' => true) unless image.info["RepoTags"].include? "tutum.co/nicholasjackson/spot-gps-cache:latest"
+
+	#p Docker.authenticate!('serveraddress' => 'https://tutum.co', 'username' => "#{REGISTRY_USER}", 'password' => "#{REGISTRY_PASS}", 'email' => "#{REGISTRY_EMAIL}")
+	sh "docker login -u #{REGISTRY_USER} -p #{REGISTRY_PASS} -e #{REGISTRY_EMAIL} https://tutum.co"
+	sh "docker push tutum.co/nicholasjackson/spot-gps-cache:latest"
+	#image.push() { |stream, chunk| puts "#{stream}: #{chunk}" }
 end
