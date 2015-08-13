@@ -10,19 +10,6 @@ REGISTRY_USER = ENV['DOCKER_REGISTRY_USER']
 REGISTRY_PASS = ENV['DOCKER_REGISTRY_PASS']
 REGISTRY_EMAIL = ENV['DOCKER_REGISTRY_EMAIL']
 
-task :build => [:test] do
-	p "Build for Linux"
-	container = get_container
-
-	begin
-		# Build go server
-		ret = container.exec(['go','build','-o','server']) { |stream, chunk| puts "#{stream}: #{chunk}" }
-		raise Exception, 'Error running command' unless ret[2] == 0
-	ensure
-		container.delete(:force => true)
-	end
-end
-
 task :test  do
 	p "Test Application"
 	container = get_container
@@ -34,6 +21,19 @@ task :test  do
 
 		# Test application
 		ret = container.exec(['go','test','./...']) { |stream, chunk| puts "#{stream}: #{chunk}" }
+		raise Exception, 'Error running command' unless ret[2] == 0
+	ensure
+		container.delete(:force => true)
+	end
+end
+
+task :build => [:test] do
+	p "Build for Linux"
+	container = get_container
+
+	begin
+		# Build go server
+		ret = container.exec(['go','build','-o','server']) { |stream, chunk| puts "#{stream}: #{chunk}" }
 		raise Exception, 'Error running command' unless ret[2] == 0
 	ensure
 		container.delete(:force => true)
