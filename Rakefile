@@ -51,11 +51,11 @@ end
 
 task :run => [:build_server] do
 	begin
-		sh 'docker-compose -f ./dockercompose/api-users/docker-compose.yml up'
+		sh 'docker-compose -f ./dockercompose/spot-gps-cache/docker-compose.yml up'
 	rescue SystemExit, Interrupt
-		sh 'docker-compose -f ./dockercompose/api-users/docker-compose.yml stop'
+		sh 'docker-compose -f ./dockercompose/spot-gps-cache/docker-compose.yml stop'
 		# remove stopped containers
-		sh 'docker-compose -f ./dockercompose/api-users/docker-compose.yml rm'
+		sh 'echo y | docker-compose -f ./dockercompose/spot-gps-cache/docker-compose.yml rm'
 	end
 end
 

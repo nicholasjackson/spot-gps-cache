@@ -28,3 +28,8 @@ _testmain.go
 # Binaries
 go/src/github.com/nicholasjackson/spot-gps-cache/server
 dockerfile/spot-gps-cache/server
+
+# Packages
+go/src/github.com/gorilla
+go/src/github.com/pmylund
+go/src/github.com/stretchr
