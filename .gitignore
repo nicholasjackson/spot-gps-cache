@@ -24,3 +24,7 @@ _testmain.go
 *.prof
 
 .DS_Store
+
+# Binaries
+go/src/github.com/nicholasjackson/spot-gps-cache/server
+dockerfile/spot-gps-cache/server
