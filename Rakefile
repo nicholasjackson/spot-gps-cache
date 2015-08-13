@@ -25,7 +25,7 @@ task :test  do
 
 	begin
 		# Get go packages
-		ret = container.exec(['go','get','-t','./...']) { |stream, chunk| puts "#{stream}: #{chunk}" }
+		ret = container.exec(['go','get','-t','-v','./...']) { |stream, chunk| puts "#{stream}: #{chunk}" }
 		raise Exception, 'Error running command' unless ret[2] == 0
 
 		# Test application
