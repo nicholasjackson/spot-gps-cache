@@ -2,15 +2,14 @@ FROM golang:latest
 
 MAINTAINER Nic Jackson <jackson.nic@gmail.com>
 
-RUN apt-get update
-
-RUN echo y | apt-get install git
-
-# install ruby
-RUN echo y | apt-get install ruby
-RUN echo y | apt-get install ruby-dev
-RUN apt-get install zlib1g-dev
-RUN echo y | apt-get install build-essential
+RUN apt-get update && \
+    apt-get install -y git && \
+    apt-get install -y ruby && \
+    apt-get install -y ruby-dev && \
+    apt-get install -y zlib1g-dev && \
+    apt-get install -y build-essential && \
+    apt-get clean && \ 
+    rm -rf /var/lib/apt/lists/*
 
 RUN gem install bundle
 
